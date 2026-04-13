@@ -1,9 +1,9 @@
-import { connectDB } from './config/database.js';
 import { createApp } from './app.js';
+import { prepareAppRuntime } from './bootstrap.js';
 import { env } from './config/env.js';
 
 async function bootstrap() {
-  await connectDB();
+  await prepareAppRuntime();
   const app = createApp();
   app.listen(env.PORT, () => {
     console.log(`[INFO] Tienda backend corriendo en http://localhost:${env.PORT}`);
