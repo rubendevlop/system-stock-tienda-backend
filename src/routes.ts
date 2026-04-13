@@ -14,7 +14,9 @@ import { asyncHandler } from './utils/async-handler.js';
 
 export const router = Router();
 
+router.get('/', (_req, res) => res.json({ ok: true, service: 'system-stock-tienda-backend' }));
 router.get('/health', (_req, res) => res.json({ ok: true, service: 'system-stock-tienda-backend' }));
+router.get('/favicon.ico', (_req, res) => res.status(204).end());
 
 router.post('/auth/login', asyncHandler(loginHandler));
 router.post('/auth/register', asyncHandler(registerHandler));

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { env } from './env.js';
+import { getMongoDbUri } from './env.js';
 
 let connectionPromise: Promise<typeof mongoose> | null = null;
 let hasLoggedConnection = false;
@@ -13,7 +13,7 @@ export async function connectDB(): Promise<void> {
   }
 
   if (!connectionPromise) {
-    connectionPromise = mongoose.connect(env.MONGODB_URI);
+    connectionPromise = mongoose.connect(getMongoDbUri());
   }
 
   try {

@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
 
 // Estos modelos leen de la MISMA colección que el backend principal
 // por eso usan los mismos nombres de colección (Mongoose pluraliza el nombre)
@@ -13,7 +13,7 @@ const userSchema = new Schema({
   active: { type: Boolean, default: true },
 }, { timestamps: true, collection: 'users' });
 
-export const UserModel = model('User', userSchema);
+export const UserModel = models.User || model('User', userSchema);
 
 const productSchema = new Schema({
   name: { type: String, required: true },
@@ -26,7 +26,7 @@ const productSchema = new Schema({
   imageUrl: { type: String, default: '' },
 }, { timestamps: true, collection: 'products' });
 
-export const ProductModel = model('Product', productSchema);
+export const ProductModel = models.Product || model('Product', productSchema);
 
 // Settings (para el token de MP guardado por el admin)
 const settingsSchema = new Schema({
@@ -37,4 +37,4 @@ const settingsSchema = new Schema({
   mpPublicKey: { type: String, default: '' },
 }, { collection: 'appsettings' });
 
-export const SettingsModel = model('AppSettings', settingsSchema);
+export const SettingsModel = models.AppSettings || model('AppSettings', settingsSchema);

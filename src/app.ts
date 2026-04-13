@@ -8,6 +8,7 @@ import { router } from './routes.js';
 export function createApp() {
   const app = express();
   const allowedOrigins = new Set([storeFrontendUrl, 'https://manolotienda.netlify.app']);
+  const localhostPattern = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
   app.use(
     cors({
@@ -17,7 +18,7 @@ export function createApp() {
           return;
         }
 
-        if (allowedOrigins.has(origin)) {
+        if (allowedOrigins.has(origin) || localhostPattern.test(origin)) {
           callback(null, true);
           return;
         }

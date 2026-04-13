@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 
-import { env } from '../../config/env.js';
+import { env, getJwtSecret } from '../../config/env.js';
 import { UserModel } from '../../models/index.js';
 
 const loginSchema = z.object({
@@ -21,7 +21,7 @@ const registerSchema = z.object({
  * Firma el JWT de sesion usando el secreto configurado.
  */
 function signToken(userId: string, role: string): string {
-  return jwt.sign({ sub: userId, role }, env.JWT_SECRET, {
+  return jwt.sign({ sub: userId, role }, getJwtSecret(), {
     expiresIn: env.JWT_EXPIRES_IN as `${number}${'s' | 'm' | 'h' | 'd'}`,
   });
 }

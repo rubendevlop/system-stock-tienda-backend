@@ -110,9 +110,12 @@ export async function mpCallbackHandler(request: Request, response: Response): P
  * Devuelve el estado de integracion con Mercado Pago.
  */
 export async function getMPStatusHandler(_request: Request, response: Response): Promise<void> {
-  const settings = await SettingsModel.findOne({ key: 'app' })
+  const settings = (await SettingsModel.findOne({ key: 'app' })
     .select('mpAccessToken mpUserId')
-    .lean();
+    .lean()) as {
+    mpAccessToken?: string;
+    mpUserId?: string;
+  } | null;
 
   response.json({
     connected: Boolean(settings?.mpAccessToken),
@@ -124,7 +127,9 @@ export async function getMPStatusHandler(_request: Request, response: Response):
  * Crea una preferencia de pago usando items y comprador ya validados.
  */
 export async function createMPPreference(request: Request, response: Response): Promise<void> {
-  const settings = await SettingsModel.findOne({ key: 'app' }).select('mpAccessToken').lean();
+  const settings = (await SettingsModel.findOne({ key: 'app' }).select('mpAccessToken').lean()) as {
+    mpAccessToken?: string;
+  } | null;
   const accessToken = settings?.mpAccessToken || env.MERCADOPAGO_ACCESS_TOKEN;
 
   if (!accessToken) {
